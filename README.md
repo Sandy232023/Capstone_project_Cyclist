@@ -1,10 +1,25 @@
 # Capstone_project_Cyclist
 
--- Scenario
- '''You are ajunior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of
- marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, your
- teamwantstounderstand howcasual riders and annual members use Cyclistic bikes di erently. From these insights, your team wil
- design a newmarketing strategy to convert casual riders into annual members. But rst, Cyclistic executives must approve your
- recommendations, so they must be backed upwith compeling data insights and professional data visualizations'''
+-- import data into SQL
+LOAD DATA LOCAL INFILE 'C:\\Users\\Santosh sahu\\Downloads\\cyclist_data\\202311-divvy-tripdata.csv'
+INTO TABLE cyclist_data
+FIELDS TERMINATED BY','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' IGNORE 1 ROWS;
+
+-- Adding Extra columns
+alter table cyclist_data
+add column start_date date,
+add column start_time time,
+add column start_weekday int,
+add column start_day varchar(10),
+add column start_month int,
+add column start_month_name varchar(20),
+add column end_date date,
+add column end_time time,
+add column end_weekday int,
+add column end_day varchar(10),
+add column end_month int,
+add column end_month_name Varchar(20);
 
 
