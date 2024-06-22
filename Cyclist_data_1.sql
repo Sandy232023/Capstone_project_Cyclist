@@ -1,12 +1,25 @@
-SELECT * FROM capstone.cyclist_data;
-    SET SESSION wait_timeout = 28800;
-SET SESSION interactive_timeout = 28800;
-SHOW VARIABLES LIKE 'wait_timeout';
-SHOW VARIABLES LIKE 'interactive_timeout';
-SET GLOBAL wait_timeout = 28800;
-SET GLOBAL interactive_timeout = 28800;
-SHOW VARIABLES LIKE 'wait_timeout';
-SHOW VARIABLES LIKE 'interactive_timeout';
+Create table cyclist_data
+	(ride_id varchar(20),
+	rideable_type varchar(20),
+	started_at Datetime,
+	ended_at Datetime,
+	start_station_name varchar(20),
+	start_station_id varchar(20),
+	end_station_name varchar(20),
+	end_station_id varchar(20),
+	start_lat Double,
+	start_lng Double,
+	end_lat Double,
+	end_lng Double,
+	member_casual varchar(20)
+	);
+	
+-- Upload Data in MYSQL through CMD
+LOAD DATA LOCAL INFILE 'C:\\Users\\Santosh sahu\\Downloads\\cyclist_data\\202311-divvy-tripdata.csv'
+INTO TABLE cyclist_data
+FIELDS TERMINATED BY','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' IGNORE 1 ROWS; -- Repeated the same process as had to upload 12 CSV Files
 
 -- Adding Extra columns
 alter table cyclist_data
@@ -39,10 +52,20 @@ set
     end_month = month(ended_at),
     end_month_name = monthname(ended_at);
     
-    -- creating a new table from the existing table with limited columns required for visualization
-    create table cyclist_clean_data as
-    select ride_id, rideable_type, member_casual,
-		start_date, start_time, start_weekday, start_day, start_month, start_month_name,
+-- creating a new table from the existing table with limited columns required for visualization
+create table cyclist_clean_data as
+select ride_id, rideable_type, member_casual,
+	start_date, start_time, start_weekday, start_day, start_month, start_month_name,
         end_date, end_time, end_weekday, end_day, end_month, end_month_name
-	from cyclist_data;
+from cyclist_data;
+
+-- Exporting the data into csv file for Visualization
+select 'ride_id','rideable_type','member_casual','start_date','start_time','start_weekday',
+	'start_day','start_month','start_month_name','end_date','end_time','end_weekday','end_day','end_month','end_month_name'
+union
+SELECT * FROM capstone.cyclist_clean_data
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\tableau_cyclist4.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
     
